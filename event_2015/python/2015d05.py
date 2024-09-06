@@ -1,12 +1,6 @@
 import re
 from pathlib import Path
 
-# import input
-event_dir = Path(__file__).parents[1]
-file_name = Path(__file__).stem
-with open(event_dir / "inputs" / file_name) as f:
-    input = f.read().splitlines()
-
 
 def three_vowels(string):
     return len([char for char in string if char in "aeiou"]) >= 3
@@ -36,16 +30,21 @@ def nice_revised(string):
     return two_pairs(string) and sandwich(string)
 
 
-# part 1
 def part_one():
     return len([string for string in input if nice_initial(string)])
 
 
-# part 2
 def part_two():
     return len([string for string in input if nice_revised(string)])
 
 
-# results
-print("Part 1:", part_one())  # 255
-print("Part 2:", part_two())  # 55
+if __name__ == "__main__":
+    # import input
+    event_dir = Path(__file__).parents[1]
+    file_name = Path(__file__).stem
+    with open(event_dir / "inputs" / file_name) as f:
+        input = f.read().splitlines()
+
+    # results
+    print("Part 1:", part_one())  # 255
+    print("Part 2:", part_two())  # 55
