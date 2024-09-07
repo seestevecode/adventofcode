@@ -1,17 +1,10 @@
 from pathlib import Path
 
+MOVE_MAP = {"^": (0, 1), ">": (1, 0), "v": (0, -1), "<": (-1, 0)}
+
 
 def move(x, y, direction):
-    match direction:
-        case "^":
-            y += 1
-        case ">":
-            x += 1
-        case "v":
-            y -= 1
-        case "<":
-            x -= 1
-    return x, y
+    return x + MOVE_MAP[direction][0], y + MOVE_MAP[direction][1]
 
 
 def part_one():
@@ -38,7 +31,7 @@ if __name__ == "__main__":
     event_dir = Path(__file__).parents[1]
     file_name = Path(__file__).stem
     with open(event_dir / "inputs" / file_name) as f:
-        input = f.read()
+        input = f.read().strip("\n")
 
     # results
     print("Part 1:", part_one())  # 2081

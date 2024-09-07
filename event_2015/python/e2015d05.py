@@ -22,20 +22,18 @@ def sandwich(string):
     return re.search(r"(.).\1", string) is not None
 
 
-def nice_initial(string):
-    return three_vowels(string) and repeated_chars(string) and not bad_pair(string)
-
-
-def nice_revised(string):
-    return two_pairs(string) and sandwich(string)
-
-
 def part_one():
-    return len([string for string in input if nice_initial(string)])
+    return len(
+        [
+            string
+            for string in input
+            if three_vowels(string) and repeated_chars(string) and not bad_pair(string)
+        ]
+    )
 
 
 def part_two():
-    return len([string for string in input if nice_revised(string)])
+    return len([string for string in input if two_pairs(string) and sandwich(string)])
 
 
 if __name__ == "__main__":

@@ -1,6 +1,10 @@
 from pathlib import Path
 
 
+def part_one():
+    return input.count("(") - input.count(")")
+
+
 def part_two():
     level = 0
     for idx, char in enumerate(input, start=1):
@@ -17,5 +21,5 @@ if __name__ == "__main__":
         input = f.read()
 
     # results
-    print("Part 1:", input.count("(") - input.count(")"))  # 280
+    print("Part 1:", part_one())  # 280
     print("Part 2:", part_two())  # 1797
