@@ -3,6 +3,11 @@ from pathlib import Path
 type Coord = tuple[int, int]
 
 GRID_SIZE = 1000
+INITIAL_GRID = {(x,y): 0 for x in range(0, GRID_SIZE) for y in range(0, GRID_SIZE)}
+ACTIONS = {
+    (1, "on"): lambda _: 1, (1, "off"): lambda _: 0, (1, "toggle"): lambda x: 1 if x == 0 else 0,
+    (2, "on"): lambda x: x + 1, (2, "off"): lambda x: max(0, x - 1), (2, "toggle"): lambda x: x + 2
+}
 
 
 def parse_line(line: str) -> tuple[str, Coord, Coord]:
@@ -10,6 +15,7 @@ def parse_line(line: str) -> tuple[str, Coord, Coord]:
         action = line.split()[1]
         coord_1, coord_2 = line.split()[2], line.split()[4]
     else:
+        assert line.startswith("toggle")
         action = "toggle"
         coord_1, coord_2 = line.split()[1], line.split()[3]
     x1, y1 = int(coord_1.split(",")[0]), int(coord_1.split(",")[1])
@@ -21,36 +27,16 @@ def get_coord_range(coord_1: Coord, coord_2: Coord) -> list[Coord]:
     x1, y1 = coord_1
     x2, y2 = coord_2
     min_x, max_x, min_y, max_y = min(x1, x2), max(x1, x2), min(y1, y2), max(y1, y2)
-    return [(x,y) for x in range(min_x, max_x + 1) for y in range(min_y, max_y + 1)]
+    return [(x, y) for x in range(min_x, max_x + 1) for y in range(min_y, max_y + 1)]
 
 
-def part_one():
-    grid = {(x,y): 0 for x in range(0, GRID_SIZE) for y in range(0, GRID_SIZE)}
+def part(part_number: int) -> int:
+    grid = INITIAL_GRID.copy()
     for line in input:
         action, coord_1, coord_2 = parse_line(line)
         for x, y in get_coord_range(coord_1, coord_2):
-            if action == "on":
-                grid[(x,y)] = 1
-            if action == "off":
-                grid[(x,y)] = 0
-            if action == "toggle":
-                grid[(x,y)] = 1 if grid[(x,y)] == 0 else 0
-    return len([state for state in grid.values() if state == 1])
-
-
-def part_two():
-    grid = {(x,y): 0 for x in range(0, GRID_SIZE) for y in range(0, GRID_SIZE)}
-    for line in input:
-        action, coord_1, coord_2 = parse_line(line)
-        for x, y in get_coord_range(coord_1, coord_2):
-            if action == "on":
-                grid[(x,y)] += 1
-            if action == "off":
-                grid[(x,y)] = max(0, grid[(x,y)] - 1)
-            if action == "toggle":
-                grid[(x,y)] += 2
+             grid[(x, y)] = (ACTIONS[(part_number, action)])(grid[(x, y)])
     return sum(grid.values())
-
 
 if __name__ == "__main__":
     # import input
@@ -60,5 +46,5 @@ if __name__ == "__main__":
         input = f.readlines()
 
     # results
-    print("Part 1:", part_one()) # 569999
-    print("Part 2:", part_two()) # 17836115
+    print("Part 1:", part(1)) # 569999
+    print("Part 2:", part(2)) # 17836115
