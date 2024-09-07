@@ -12,14 +12,12 @@ ACTIONS = {
 
 def parse_line(line: str) -> tuple[str, Coord, Coord]:
     if line.startswith("turn"):
-        action = line.split()[1]
-        coord_1, coord_2 = line.split()[2], line.split()[4]
+        _, action, coord_1, _, coord_2 = line.split()
     else:
         assert line.startswith("toggle")
-        action = "toggle"
-        coord_1, coord_2 = line.split()[1], line.split()[3]
-    x1, y1 = int(coord_1.split(",")[0]), int(coord_1.split(",")[1])
-    x2, y2 = int(coord_2.split(",")[0]), int(coord_2.split(",")[1])
+        action, coord_1, _, coord_2 = line.split()
+    x1, y1 = map(int, coord_1.split(","))
+    x2, y2 = map(int, coord_2.split(","))
     return (action, (x1, y1), (x2, y2))
 
 
