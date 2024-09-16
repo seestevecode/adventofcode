@@ -37,12 +37,10 @@ def part(part_number: int) -> int:
     return sum(grid.values())
 
 if __name__ == "__main__":
-    # import input
     event_dir = Path(__file__).parents[1]
     file_name = Path(__file__).stem
     with open(event_dir / "inputs" / file_name) as f:
         input = f.readlines()
 
-    # results
     print("Part 1:", part(1)) # 569999
     print("Part 2:", part(2)) # 17836115
