@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-def answer_part(part):
+def solve():
     paper, ribbon = 0, 0
     for dim_string in input:
         dims = sorted([int(dim) for dim in dim_string.split("x")])
@@ -10,7 +10,15 @@ def answer_part(part):
             + dims[0] * dims[1]
         )
         ribbon += 2 * (dims[0] + dims[1]) + dims[0] * dims[1] * dims[2]
-    return paper if part == 1 else ribbon
+    return (paper, ribbon)
+
+
+def part_one():
+    return solve()[0]
+
+
+def part_two():
+    return solve()[1]
 
 
 if __name__ == "__main__":
@@ -19,5 +27,5 @@ if __name__ == "__main__":
     with open(event_dir / "inputs" / file_name) as f:
         input = f.read().strip().splitlines()
 
-    print("Part 1:", answer_part(1))
-    print("Part 2:", answer_part(2))
+    print("Part 1:", part_one())  # 1586300
+    print("Part 2:", part_two())  # 3737498

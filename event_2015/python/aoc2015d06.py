@@ -28,7 +28,7 @@ def get_coord_range(coord_1: Coord, coord_2: Coord) -> list[Coord]:
     return [(x, y) for x in range(min_x, max_x + 1) for y in range(min_y, max_y + 1)]
 
 
-def part(part_number: int) -> int:
+def solve(part_number: int) -> int:
     grid = INITIAL_GRID.copy()
     for line in input:
         action, coord_1, coord_2 = parse_line(line)
@@ -36,11 +36,17 @@ def part(part_number: int) -> int:
              grid[(x, y)] = (ACTIONS[(part_number, action)])(grid[(x, y)])
     return sum(grid.values())
 
+def part_one():
+    return solve(1)
+
+def part_two():
+    return solve(2)
+
 if __name__ == "__main__":
     event_dir = Path(__file__).parents[1]
     file_name = Path(__file__).stem
     with open(event_dir / "inputs" / file_name) as f:
         input = f.readlines()
 
-    print("Part 1:", part(1)) # 569999
-    print("Part 2:", part(2)) # 17836115
+    print("Part 1:", part_one()) # 569999
+    print("Part 2:", part_two()) # 17836115
