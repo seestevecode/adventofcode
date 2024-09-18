@@ -3,11 +3,9 @@ from pathlib import Path
 type Coord = tuple[int, int]
 
 GRID_SIZE = 1000
-INITIAL_GRID = {(x,y): 0 for x in range(0, GRID_SIZE) for y in range(0, GRID_SIZE)}
-ACTIONS = {
-    (1, "on"): lambda _: 1, (1, "off"): lambda _: 0, (1, "toggle"): lambda x: 1 if x == 0 else 0,
-    (2, "on"): lambda x: x + 1, (2, "off"): lambda x: max(0, x - 1), (2, "toggle"): lambda x: x + 2
-}
+INITIAL_GRID = {(x,y): 0 for x in range(GRID_SIZE) for y in range(GRID_SIZE)}
+ACTIONS_PART_ONE = { "on": lambda _: 1, "off": lambda _: 0, "toggle": lambda x: 1 if x == 0 else 0 }
+ACTIONS_PART_TWO = { "on": lambda x: x + 1, "off": lambda x: max(0, x - 1), "toggle": lambda x: x + 2 }
 
 
 def parse_line(line: str) -> tuple[str, Coord, Coord]:
@@ -28,19 +26,21 @@ def get_coord_range(coord_1: Coord, coord_2: Coord) -> list[Coord]:
     return [(x, y) for x in range(min_x, max_x + 1) for y in range(min_y, max_y + 1)]
 
 
-def solve(part_number: int) -> int:
+def process_actions(actions) -> int:
     grid = INITIAL_GRID.copy()
     for line in input:
         action, coord_1, coord_2 = parse_line(line)
         for x, y in get_coord_range(coord_1, coord_2):
-             grid[(x, y)] = (ACTIONS[(part_number, action)])(grid[(x, y)])
+             grid[(x, y)] = (actions[action])(grid[(x, y)])
     return sum(grid.values())
 
+
 def part_one():
-    return solve(1)
+    return process_actions(ACTIONS_PART_ONE)
+
 
 def part_two():
-    return solve(2)
+    return process_actions(ACTIONS_PART_TWO)
 
 if __name__ == "__main__":
     event_dir = Path(__file__).parents[1]
