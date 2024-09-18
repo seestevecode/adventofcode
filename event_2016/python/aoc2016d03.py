@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-def valid_candidate(candidate):
+def is_valid_candidate(candidate):
     side_1, side_2, side_3 = candidate
     return (
         side_1 + side_2 > side_3
@@ -11,7 +11,7 @@ def valid_candidate(candidate):
 
 
 def count_candidates(array):
-    return len([candidate for candidate in array if valid_candidate(candidate)])
+    return len([candidate for candidate in array if is_valid_candidate(candidate)])
 
 
 def part_one():
