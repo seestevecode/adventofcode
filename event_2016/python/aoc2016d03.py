@@ -14,12 +14,15 @@ def count_candidates(array):
     return len([candidate for candidate in array if is_valid_candidate(candidate)])
 
 
+def chunk_threes(array):
+    return [array[i : i + 3] for i in range(0, len(array), 3)]
+
+
 def part_one():
     return count_candidates(input)
 
 
 def part_two():
-    chunk_threes = lambda lst: [lst[i : i + 3] for i in range(0, len(lst), 3)]
     transposed_input = [list(zip(*inner)) for inner in chunk_threes(input)]
     flattened_input = [item for sublist in transposed_input for item in sublist]
     return count_candidates(flattened_input)
