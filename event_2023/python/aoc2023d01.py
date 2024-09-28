@@ -11,6 +11,7 @@ def solve(input):
             if char.isdigit():
                 digits_one.append(char)
                 digits_two.append(char)
+                continue
             for num_idx, num in enumerate(NUMBERS):
                 if line[line_idx:].startswith(num):
                     digits_two.append(str(num_idx + 1))
