@@ -1,22 +1,43 @@
 from pathlib import Path
 
-SCORES = {
-    ("A", "X"): (4, 3),
-    ("A", "Y"): (8, 4),
-    ("A", "Z"): (3, 8),
-    ("B", "X"): (1, 1),
-    ("B", "Y"): (5, 5),
-    ("B", "Z"): (9, 9),
-    ("C", "X"): (7, 2),
-    ("C", "Y"): (2, 6),
-    ("C", "Z"): (6, 7),
+SHAPE = {
+    "A": "Rock",
+    "B": "Paper",
+    "C": "Scissors",
+    "X": "Rock",
+    "Y": "Paper",
+    "Z": "Scissors",
 }
+OUTCOME = {"X": "Loss", "Y": "Draw", "Z": "Win"}
+OUTCOME_POINTS = {"Loss": 0, "Draw": 3, "Win": 6}
+CHOICE_POINTS = {"Rock": 1, "Paper": 2, "Scissors": 3}
+WINNING_GAMES = [("Rock", "Paper"), ("Paper", "Scissors"), ("Scissors", "Rock")]
 
 
-def solve(input):
-    part_one = sum(SCORES[game][0] for game in input)
-    part_two = sum(SCORES[game][1] for game in input)
-    return (part_one, part_two)
+def part_one(input):
+    total_score = 0
+    for raw_row in input:
+        them, us = SHAPE[raw_row[0]], SHAPE[raw_row[1]]
+        outcome = (
+            "Win" if (them, us) in WINNING_GAMES else "Draw" if them == us else "Loss"
+        )
+        total_score += OUTCOME_POINTS[outcome] + CHOICE_POINTS[us]
+    return total_score
+
+
+def part_two(input):
+    total_score = 0
+    for raw_row in input:
+        them, outcome = SHAPE[raw_row[0]], OUTCOME[raw_row[1]]
+        us = (
+            [win[1] for win in WINNING_GAMES if them == win[0]][0]
+            if outcome == "Win"
+            else [win[0] for win in WINNING_GAMES if them == win[1]][0]
+            if outcome == "Loss"
+            else them
+        )
+        total_score += OUTCOME_POINTS[outcome] + CHOICE_POINTS[us]
+    return total_score
 
 
 if __name__ == "__main__":
@@ -25,7 +46,5 @@ if __name__ == "__main__":
     with open(event_dir / "inputs" / file_name) as f:
         input = list(map(lambda x: tuple(x.split()), f.read().strip().split("\n")))
 
-    part_one, part_two = solve(input)
-
-    print("Part 1:", part_one)  # 11603
-    print("Part 2:", part_two)  # 12725
+    print("Part 1:", part_one(input))  # 11603
+    print("Part 2:", part_two(input))  # 12725
